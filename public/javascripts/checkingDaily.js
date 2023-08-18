@@ -2,7 +2,7 @@ import {Client} from "@notionhq/client";
 import axios from "axios";
 
 // notion 객체생성
-const notion = new Client({auth: 'secretKeyXXX'})
+const notion = new Client({auth: 'secret_keyXXX'})
 // data insert할 database 지정
 const databaseId = 'databaseIdXXX'
 // 오늘 날짜값 format
@@ -16,7 +16,7 @@ const getHolidays = {
         'solYear': today.toISOString().split("-")[0],
         'solMonth': today.toISOString().split("-")[1],
         '_type': 'json',
-        'ServiceKey': 'serviceKeyXXX',
+        'ServiceKey': 'ServiceKeyXXX',
         'numOfRows': '15'
     },
 };
@@ -29,12 +29,13 @@ axios(getHolidays)
         if(response.data.response.body.items.length === 0);
         else if(response.data.response.body.items.item.locdate === undefined)
             response.data.response.body.items.item.forEach(v => {
-                if(response.data.response.body.items.item.isHoliday.equals('Y'))
+                if(v.isHoliday === 'Y')
                     nationalHoliday.push(v.locdate)
             });
-        else
-            if(response.data.response.body.items.item.isHoliday.equals('Y'))
+        else {
+            if(response.data.response.body.items.item.isHoliday === 'Y')
                 nationalHoliday.push(response.data.response.body.items.item.locdate);
+        }
     })
     .catch(function (error) {
         console.log(error);
@@ -100,7 +101,7 @@ if(nationalHoliday.indexOf(Number(today.toISOString().split("T")[0].replaceAll("
         // telegram 전송 관련 설정
         const config = {
             method: 'post',
-            url: 'https://api.telegram.org/bot_id/sendMessage',
+            url: 'https://api.telegram.org/botIdXXX/sendMessage',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
